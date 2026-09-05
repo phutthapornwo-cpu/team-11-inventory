@@ -21,8 +21,9 @@ class EmailNotifier:
 
     def send_low_stock_alert(self, product: Product) -> None:
         """ส่งข้อความแจ้งเตือนผ่านอีเมลแบบจำลอง"""
+        masked_email = _mask_contact(self.recipient_email)
         print(
-            f"[Email] ถึง {self.recipient_email}: สินค้า {product.name} "
+            f"[Email] ถึง {masked_email}: สินค้า {product.name} "
             f"({product.code}) คงเหลือ {product.quantity} ต่ำกว่า threshold {product.threshold}"
         )
 
@@ -35,8 +36,9 @@ class SMSNotifier:
 
     def send_low_stock_alert(self, product: Product) -> None:
         """ส่งข้อความแจ้งเตือนผ่าน SMS แบบจำลอง"""
+        masked_phone = _mask_contact(self.phone_number)
         print(
-            f"[SMS] ถึง {self.phone_number}: สินค้า {product.name} "
+            f"[SMS] ถึง {masked_phone}: สินค้า {product.name} "
             f"({product.code}) คงเหลือ {product.quantity} ต่ำกว่า threshold {product.threshold}"
         )
 
@@ -61,3 +63,9 @@ class NotifierFactory:
             cls.create_notifier(channel=str(config["channel"]), target=str(config["target"]))
             for config in configs
         ]
+
+
+def _mask_contact(target: str) -> str:
+    if len(target) <= 4:
+        return "*" * len(target)
+    return f"{target[:2]}{'*' * (len(target) - 4)}{target[-2:]}"
