@@ -1,5 +1,31 @@
+import json
+from pathlib import Path
+
 # เก็บข้อมูลสินค้าในระบบ
+DATA_FILE = Path("items.json")
 items = {}
+
+
+def load_items(file_path=DATA_FILE):
+    """อ่านข้อมูลสินค้าจากไฟล์ JSON"""
+    path = Path(file_path)
+    if not path.exists():
+        return {}
+
+    try:
+        with path.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+    return data if isinstance(data, dict) else {}
+
+
+def save_items(items_data, file_path=DATA_FILE):
+    """บันทึกข้อมูลสินค้าลงไฟล์ JSON"""
+    path = Path(file_path)
+    with path.open("w", encoding="utf-8") as file:
+        json.dump(items_data, file, ensure_ascii=False, indent=2)
 
 
 def list_items():
@@ -19,6 +45,9 @@ def list_items():
 
 def main_menu():
     """รับข้อมูลสินค้าจาก Terminal และจัดการเมนูหลัก"""
+    global items
+    items = load_items()
+
     while True:
         print("\n=== ระบบจัดการสินค้า ===")
         print("1. เพิ่มสินค้า")
@@ -52,6 +81,7 @@ def main_menu():
                 "name": product_name,
                 "quantity": quantity
             }
+            save_items(items)
 
             print("เพิ่มสินค้าสำเร็จ")
 
