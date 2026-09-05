@@ -98,7 +98,25 @@ def main_menu():
 
         else:
             print("กรุณาเลือกเมนู 1, 2 หรือ 3")
+def update_stock(item_id, qty_change):
+   # ตรวจสอบเงื่อนไขก่อน (เช่น ถ้าจ่ายออกมากกว่าคงเหลือ)
+   if new_qty < 0:
+        print("จำนวนคงเหลือไม่พอ")
+        return False  # ไม่เรียก save_items()
 
-
+       # ถ้าผ่านเงื่อนไข ค่อยอัปเดตแล้ว save ทันที
+   items[item_id]["quantity"] = new_qty
+   save_items(items)   # <-- เชื่อมตรงนี้
+   return True
+def update_stock(item_id, qty_change):
+   # ตรวจสอบเงื่อนไขก่อน (เช่น ถ้าจ่ายออกมากกว่าคงเหลือ)
+   if new_qty < 0:
+       print("จำนวนคงเหลือไม่พอ")
+       return False  # ไม่เรียก save_items()
+   
+   # ถ้าผ่านเงื่อนไข ค่อยอัปเดตแล้ว save ทันที
+   items[item_id]["quantity"] = new_qty
+   save_items(items)   # <-- เชื่อมตรงนี้
+   return True
 if __name__ == "__main__":
     main_menu()
