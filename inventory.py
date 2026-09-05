@@ -28,6 +28,22 @@ def save_items(items_data, file_path=DATA_FILE):
         json.dump(items_data, file, ensure_ascii=False, indent=2)
 
 
+def add_item(code, name, initial_stock):
+    """เพิ่มสินค้าใหม่เข้าระบบพร้อมตรวจสอบข้อมูล"""
+    if code in items:
+        return "รหัสสินค้าซ้ำ"
+
+    if initial_stock < 0:
+        return "จำนวนสินค้าต้องไม่ติดลบ"
+
+    items[code] = {
+        "name": name,
+        "quantity": initial_stock
+    }
+    save_items(items)
+    return "เพิ่มสินค้าสำเร็จ"
+
+
 def list_items():
     """แสดงรายการสินค้าทั้งหมดที่มีในระบบ (AC-1)"""
     if not items:
@@ -67,23 +83,11 @@ def main_menu():
 
             try:
                 quantity = int(input("กรอกจำนวนเริ่มต้น: "))
-
-                if quantity < 0:
-                    print("จำนวนสินค้าต้องไม่ติดลบ")
-                    continue
-
             except ValueError:
                 print("กรุณากรอกจำนวนสินค้าเป็นตัวเลขเท่านั้น")
                 continue
 
-            # เพิ่มสินค้าเข้าระบบ
-            items[product_id] = {
-                "name": product_name,
-                "quantity": quantity
-            }
-            save_items(items)
-
-            print("เพิ่มสินค้าสำเร็จ")
+            print(add_item(product_id, product_name, quantity))
 
         elif choice == "2":
             list_items()
