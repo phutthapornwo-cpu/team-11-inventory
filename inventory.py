@@ -59,6 +59,29 @@ def list_items():
         )
 
 
+def update_stock(item_id, qty_change):
+    """
+    ปรับยอดคงเหลือของสินค้า (Task 2: Immediate Persistence)
+    qty_change: บวก = รับเข้า, ลบ = จ่ายออก
+    คืนค่า (success: bool, message: str, new_qty: int หรือ None)
+    """
+    # AC: ต้องมีสินค้ารหัสนี้อยู่ในระบบก่อน
+    if item_id not in items:
+        return False, "ไม่พบรหัสสินค้านี้ในระบบ", None
+
+    current_qty = items[item_id]["quantity"]
+    new_qty = current_qty + qty_change
+
+    # AC-2: ถ้าจ่ายออกมากกว่าคงเหลือ ห้ามอัปเดต/บันทึกไฟล์ ยอดคงเหลือต้องไม่เปลี่ยน
+    if new_qty < 0:
+        return False, "จำนวนคงเหลือไม่พอ", None
+
+    # AC-1: ถ้าผ่านเงื่อนไข ให้อัปเดตค่าและบันทึกไฟล์ทันที
+    items[item_id]["quantity"] = new_qty
+    save_items(items)
+    return True, "อัปเดตสต็อกสำเร็จ", new_qty
+
+
 def main_menu():
     """รับข้อมูลสินค้าจาก Terminal และจัดการเมนูหลัก"""
     global items
@@ -68,7 +91,8 @@ def main_menu():
         print("\n=== ระบบจัดการสินค้า ===")
         print("1. เพิ่มสินค้า")
         print("2. แสดงรายการสินค้าทั้งหมด")
-        print("3. ออกจากระบบ")
+        print("3. รับเข้า/จ่ายออกสินค้า")
+        print("4. ออกจากระบบ")
 
         choice = input("เลือกเมนู: ")
 
@@ -93,30 +117,43 @@ def main_menu():
             list_items()
 
         elif choice == "3":
+            # Task 3: เมนูรับเข้า/จ่ายออกสินค้าผ่าน CLI
+            product_id = input("กรอกรหัสสินค้า: ").strip()
+
+            if product_id not in items:
+                print("ไม่พบรหัสสินค้านี้ในระบบ")
+                continue
+
+            action = input("ประเภทรายการ (in = รับเข้า / out = จ่ายออก): ").strip().lower()
+            if action not in ("in", "out"):
+                print("กรุณาเลือก in หรือ out เท่านั้น")
+                continue
+
+            try:
+                quantity = int(input("กรอกจำนวน: "))
+            except ValueError:
+                print("กรุณากรอกจำนวนเป็นตัวเลขเท่านั้น")
+                continue
+
+            if quantity < 0:
+                print("จำนวนต้องไม่ติดลบ")
+                continue
+
+            qty_change = quantity if action == "in" else -quantity
+            success, message, new_qty = update_stock(product_id, qty_change)
+
+            if success:
+                print(f"{message} ยอดคงเหลือใหม่: {new_qty}")
+            else:
+                print(message)
+
+        elif choice == "4":
             print("ออกจากระบบ")
             break
 
         else:
-            print("กรุณาเลือกเมนู 1, 2 หรือ 3")
-def update_stock(item_id, qty_change):
-   # ตรวจสอบเงื่อนไขก่อน (เช่น ถ้าจ่ายออกมากกว่าคงเหลือ)
-   if new_qty < 0:
-        print("จำนวนคงเหลือไม่พอ")
-        return False  # ไม่เรียก save_items()
+            print("กรุณาเลือกเมนู 1, 2, 3 หรือ 4")
 
-       # ถ้าผ่านเงื่อนไข ค่อยอัปเดตแล้ว save ทันที
-   items[item_id]["quantity"] = new_qty
-   save_items(items)   # <-- เชื่อมตรงนี้
-   return True
-def update_stock(item_id, qty_change):
-   # ตรวจสอบเงื่อนไขก่อน (เช่น ถ้าจ่ายออกมากกว่าคงเหลือ)
-   if new_qty < 0:
-       print("จำนวนคงเหลือไม่พอ")
-       return False  # ไม่เรียก save_items()
-   
-   # ถ้าผ่านเงื่อนไข ค่อยอัปเดตแล้ว save ทันที
-   items[item_id]["quantity"] = new_qty
-   save_items(items)   # <-- เชื่อมตรงนี้
-   return True
+
 if __name__ == "__main__":
     main_menu()
