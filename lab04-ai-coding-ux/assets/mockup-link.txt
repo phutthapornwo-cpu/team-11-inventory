@@ -1,5 +1,5 @@
 echo ลิงก์งานออกแบบ UI Mockup (Figma / draw.io): > lab04-ai-coding-ux\assets\mockup-link.txt
-echo https://www.figma.com/file/sample-inventory-mockup >> lab04-ai-coding-ux\assets\mockup-link.txt
+echo https://www.figma.com/make/h7oNeQRse2Orgd3WqIWXar/Create-Mockup-with-WCAG-Colors?t=o8PVg0nQLXZkU5xG-20&fullscreen=1 >> lab04-ai-coding-ux\assets\mockup-link.txt
 echo. >> lab04-ai-coding-ux\assets\mockup-link.txt
 echo ชุดสีที่ใช้ตามเกณฑ์ WCAG AA: >> lab04-ai-coding-ux\assets\mockup-link.txt
 echo - Primary: #1E40AF (ปุ่มหลัก และเมนูที่กำลังอยู่) >> lab04-ai-coding-ux\assets\mockup-link.txt
