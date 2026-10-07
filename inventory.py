@@ -1,7 +1,7 @@
 class Inventory:
     def __init__(self, items=None):
-        """
-        เก็บข้อมูลสินค้าในคลัง
+        """เก็บข้อมูลสินค้าในคลัง
+
         รองรับทั้ง Dict, Dict of Dicts, และ List of Dicts
         """
         if items is None:
@@ -13,13 +13,15 @@ class Inventory:
         """เพิ่มหรืออัปเดตจำนวนสินค้า"""
         if isinstance(self.items, dict):
             if name in self.items and isinstance(self.items[name], dict):
-                self.items[name]['quantity'] = self.items[name].get('quantity', 0) + quantity
+                self.items[name]["quantity"] = (
+                    self.items[name].get("quantity", 0) + quantity
+                )
             else:
                 self.items[name] = self.items.get(name, 0) + quantity
 
     def low_stock_items(self, threshold):
-        """
-        ส่งคืนรายการสินค้าที่มีจำนวนน้อยกว่าหรือเท่ากับ threshold
+        """ส่งคืนรายการสินค้าที่มีจำนวนน้อยกว่าหรือเท่ากับ threshold
+
         โดยเรียงลำดับผลลัพธ์ตามชื่อสินค้า
         """
         result = []
@@ -27,18 +29,18 @@ class Inventory:
         if isinstance(self.items, dict):
             for name, data in self.items.items():
                 if isinstance(data, dict):
-                    qty = data.get('quantity', 0)
+                    qty = data.get("quantity", 0)
                 else:
                     qty = data
-                
+
                 if qty <= threshold:
                     result.append(name)
 
         elif isinstance(self.items, list):
             for item in self.items:
                 if isinstance(item, dict):
-                    name = item.get('name')
-                    qty = item.get('quantity', 0)
+                    name = item.get("name")
+                    qty = item.get("quantity", 0)
                     if qty <= threshold:
                         result.append(name)
 
@@ -54,7 +56,10 @@ class Inventory:
                 raise KeyError(f"Item '{name}' not found in inventory")
 
             # ดึงจำนวนปัจจุบัน
-            current_qty = self.items[name]['quantity'] if isinstance(self.items[name], dict) else self.items[name]
+            if isinstance(self.items[name], dict):
+                current_qty = self.items[name]["quantity"]
+            else:
+                current_qty = self.items[name]
 
             if quantity <= 0:
                 raise ValueError("Quantity to sell must be greater than zero")
@@ -63,6 +68,6 @@ class Inventory:
 
             # ตัดสต็อก
             if isinstance(self.items[name], dict):
-                self.items[name]['quantity'] -= quantity
+                self.items[name]["quantity"] -= quantity
             else:
                 self.items[name] -= quantity

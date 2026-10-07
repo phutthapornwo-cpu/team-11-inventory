@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Iterable
+from collections.abc import Iterable
 
 from src.models import Product, StockTransaction
 from src.notifiers import Notifier
@@ -28,7 +28,9 @@ class InventoryService:
         """บันทึกรับสินค้าเข้าและอัปเดตสต็อกทันที"""
         product = self._get_product_or_raise(product_code)
         product.increase_stock(quantity)
-        return StockTransaction(product_code=product_code, quantity=quantity, transaction_type="IN")
+        return StockTransaction(
+            product_code=product_code, quantity=quantity, transaction_type="IN"
+        )
 
     def record_stock_out(self, product_code: str, quantity: int) -> StockTransaction:
         """บันทึกจ่ายสินค้าออกและแจ้งเตือนเมื่อสต็อกต่ำ"""
@@ -39,7 +41,9 @@ class InventoryService:
             for notifier in self._notifiers:
                 notifier.send_low_stock_alert(product)
 
-        return StockTransaction(product_code=product_code, quantity=quantity, transaction_type="OUT")
+        return StockTransaction(
+            product_code=product_code, quantity=quantity, transaction_type="OUT"
+        )
 
     def get_product(self, product_code: str) -> Product:
         """ดึงข้อมูลสินค้าตามรหัส"""
@@ -50,7 +54,8 @@ class InventoryService:
         totals: dict[str, float] = {}
         for product in self._products.values():
             category_name = product.category.name
-            totals[category_name] = totals.get(category_name, 0.0) + product.inventory_value()
+            current_value = totals.get(category_name, 0.0)
+            totals[category_name] = current_value + product.inventory_value()
         return totals
 
     def _get_product_or_raise(self, product_code: str) -> Product:

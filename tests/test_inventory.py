@@ -1,5 +1,7 @@
 import pytest
+
 from inventory import Inventory  # <--- เพิ่มบรรทัดนี้
+
 
 # --- Test เดิมสำหรับ low_stock_items ---
 def test_all_items_above_threshold():
