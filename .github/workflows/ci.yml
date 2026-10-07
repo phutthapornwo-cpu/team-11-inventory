@@ -25,4 +25,4 @@ jobs:
         run: ruff check .
 
       - name: รัน test พร้อมเกณฑ์ coverage ขั้นต่ำ
-        run: pytest tests/ --cov=. --cov-report=term-missing --cov-fail-under=85
+        run: PYTHONPATH=. pytest tests/ --cov=. --cov-report=term-missing --cov-fail-under=85
