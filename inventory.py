@@ -43,3 +43,26 @@ class Inventory:
                         result.append(name)
 
         return sorted(result)
+
+    def sell(self, name, quantity):
+        """ตัดสต็อกสินค้าเมื่อทำการขาย"""
+        if not isinstance(quantity, int):
+            raise TypeError("Quantity must be an integer")
+
+        if isinstance(self.items, dict):
+            if name not in self.items:
+                raise KeyError(f"Item '{name}' not found in inventory")
+
+            # ดึงจำนวนปัจจุบัน
+            current_qty = self.items[name]['quantity'] if isinstance(self.items[name], dict) else self.items[name]
+
+            if quantity <= 0:
+                raise ValueError("Quantity to sell must be greater than zero")
+            if current_qty < quantity:
+                raise ValueError(f"Insufficient stock for '{name}'")
+
+            # ตัดสต็อก
+            if isinstance(self.items[name], dict):
+                self.items[name]['quantity'] -= quantity
+            else:
+                self.items[name] -= quantity
