@@ -748,7 +748,38 @@ Feature จะถือว่าเสร็จเมื่อผ่านเง
 
 ---
 
-# 26. Final Development Principle
+# 26. เอกสารตามหัวข้อที่ต้องมี
+
+## 26.1 spec ของระบบ
+
+* `specs/spec.md`
+
+## 26.2 class diagram หรือ sequence diagram
+
+* `diagrams/class.md`
+* `diagrams/sequence.md`
+
+## 26.3 งานฝั่งผู้ใช้ คือ persona, wireframe และผลตรวจ accessibility
+
+* Persona: `lab04-ai-coding-ux/persona.md`
+* Wireframe: `lab04-ai-coding-ux/assets/wireframe-ai.md`
+* Accessibility review: `lab04-ai-coding-ux/accessibility-review.md`
+
+## 26.4 test อัตโนมัติ และหน้าผลการรัน CI
+
+* Automated tests: `tests/`
+* CI workflow: `.github/workflows/ci.yml`
+* CI result screenshots:
+  * `screenshots/ci-red-67332310118-8.png.png`
+  * `screenshots/screenshotsci-green-67332310118-8.png.png`
+
+## 26.5 บันทึกการใช้ AI
+
+* `AI_ITERATION_LOG.md`
+
+---
+
+# 27. Final Development Principle
 
 > **Build the right behavior, prove it with tests, keep the design maintainable, and let humans remain responsible for the final decision.**
 
