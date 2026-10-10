@@ -26,30 +26,35 @@ def calc(items, member=None, coupon=None, today=None):
         elif i[1] >= 50:
             sub = sub * 0.95
         t = t + sub
+
     # ส่วนลดสมาชิก
-    if member != None:
+    if member is not None:
         if member not in member_points:
             member_points[member] = 0
         # สมาชิกลด 5%
         t = t * 0.95
         # สะสมแต้ม 1 แต้มต่อ 100 บาท
         member_points[member] = member_points[member] + int(t / 100)
+
     # คูปอง
-    if coupon != None:
+    if coupon is not None:
         if coupon == "SAVE50":
             t = t - 50
         elif coupon == "HALF":
             t = t * 0.5
         elif coupon == "NEWYEAR":
             # ใช้ได้เฉพาะเดือนมกราคม
-            if today == None:
+            if today is None:
                 today = datetime.date.today()
             if today.month == 1:
                 t = t * 0.8
+
     if t < 0:
         t = 0
+
     # บวกภาษี
     t = t + t * TAX
+
     # ปัดเศษ
     t = round(t, 2)
     LOG.append((member, t))
