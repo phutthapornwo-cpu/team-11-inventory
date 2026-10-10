@@ -27,7 +27,7 @@ def calc(items, member=None, coupon=None, today=None):
             sub = sub * 0.95
         t = t + sub
     # ส่วนลดสมาชิก
-    if member != None:
+    if member is not None:
         if member not in member_points:
             member_points[member] = 0
         # สมาชิกลด 5%
