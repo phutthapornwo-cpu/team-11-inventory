@@ -24,10 +24,10 @@ jobs:
       - name: ตรวจด้วย ruff
         run: ruff check .
 
+     
       - name: รัน test พร้อมเกณฑ์ coverage ขั้นต่ำ
-
-run: |
-  python -m pytest \
-    --cov=. \
-    --cov-report=term-missing \
-    --cov-fail-under=85
+        run: |
+          python -m pytest \
+            --cov=. \
+            --cov-report=term-missing \
+            --cov-fail-under=85
